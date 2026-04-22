@@ -1,0 +1,255 @@
+{
+  "name": "ANS Bulk Image Downloader",
+  "nodes": [
+    {
+      "id": "node-sticky",
+      "name": "Setup Instructions",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-440, 180],
+      "parameters": {
+        "width": 400,
+        "height": 560,
+        "content": "## ANS Bulk Image Downloader\n\n### One-time setup\n\n1. **CSV**: Copy your ANS export to `/data/ans_export.csv` on the n8n server (or edit the path in *Read ANS CSV*).\n\n2. **Google account**: Add a Google credential in *Settings → Credentials*, then open each Drive node and select it.\n\n3. **Folder ID**: Create a folder in Google Drive called `ANS_Coins`. Open it, copy the ID from the URL (`/folders/XXXXXXX`), and paste it over `REPLACE_WITH_FOLDER_ID` in *Save Obverse to Drive* and *Save Reverse to Drive*.\n\n4. **Image size** (optional): Edit *Build Image URLs* — change `width350` → `noscale` for full-resolution (files will be ~5× larger).\n\n5. **User-Agent**: Replace `your@email.com` with your real address in both HTTP Request nodes.\n\n### Running it\n- For the full 7 705-record run, click **Activate** and trigger via schedule or webhook — do NOT use *Test Workflow* for the full set.\n- **Estimate**: 7 705 records × ~2 s = ~4.3 hrs at 1 req/s.\n- `continueOnFail` is ON everywhere — 404s (missing images) are skipped silently.\n- If the run is interrupted, re-run from the beginning; duplicate uploads are harmless."
+      }
+    },
+    {
+      "id": "node-1",
+      "name": "Start",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 500],
+      "parameters": {}
+    },
+    {
+      "id": "node-2",
+      "name": "Read ANS CSV",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [220, 500],
+      "parameters": {
+        "filePath": "/data/ans_export.csv"
+      }
+    },
+    {
+      "id": "node-3",
+      "name": "Parse CSV Rows",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 2,
+      "position": [440, 500],
+      "parameters": {
+        "operation": "fromFile",
+        "fileFormat": "csv",
+        "binaryPropertyName": "data",
+        "options": {
+          "headerRow": true,
+          "encoding": "utf8"
+        }
+      }
+    },
+    {
+      "id": "node-4",
+      "name": "Loop Over Records",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [660, 500],
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      }
+    },
+    {
+      "id": "node-5",
+      "name": "Build Image URLs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 400],
+      "parameters": {
+        "jsCode": "// ── CONFIG ────────────────────────────────────────────────────────────\n// 'width350' = 350 px thumbnails  |  'noscale' = full resolution\nconst IMAGE_SIZE = 'width350';\n// ──────────────────────────────────────────────────────────────────────\n\nconst row = $input.item.json;\n\n// Try every column name the ANS CSV export might use for the accession ID\nconst id = String(\n  row['id'] ?? row['ID'] ?? row['identifier'] ?? row['Identifier'] ??\n  row['Accession No.'] ?? row['accession_number'] ?? row['objectId'] ?? ''\n).trim();\n\nif (!id) return [];  // skip completely empty rows\n\n// ANS accession IDs:  YYYY.sequence.item  (e.g. 1944.100.1)\nconst acqYear = parseInt(id.split('.')[0], 10);\nif (isNaN(acqYear) || acqYear < 1800 || acqYear > 2030) return [];\n\nconst decade = Math.floor(acqYear / 10) * 10;\nconst base   = `https://numismatics.org/collectionimages/${decade}/${acqYear}/${id}`;\nconst safe   = id.replace(/\\./g, '_');  // dots → underscores for Drive-safe filenames\n\nreturn [{\n  json: {\n    id,\n    obvUrl:      `${base}.obv.${IMAGE_SIZE}.jpg`,\n    revUrl:      `${base}.rev.${IMAGE_SIZE}.jpg`,\n    obvFilename: `${safe}_obv.jpg`,\n    revFilename: `${safe}_rev.jpg`,\n    title:  String(row['title']  ?? row['Title']  ?? row['name'] ?? id),\n    date:   String(row['date']   ?? row['Date']   ?? ''),\n  }\n}];"
+      }
+    },
+    {
+      "id": "node-6",
+      "name": "Fetch Obverse",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1100, 400],
+      "continueOnFail": true,
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.obvUrl }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data",
+              "neverError": true
+            }
+          }
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "ArtOfMetal-BulkDownloader/1.0 (educational research; your@email.com)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "node-7",
+      "name": "Save Obverse to Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [1320, 400],
+      "continueOnFail": true,
+      "parameters": {
+        "operation": "upload",
+        "name": "={{ $('Build Image URLs').item.json.obvFilename }}",
+        "inputDataFieldName": "data",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "REPLACE_WITH_FOLDER_ID",
+          "mode": "id"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-8",
+      "name": "Fetch Reverse",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1540, 400],
+      "continueOnFail": true,
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $('Build Image URLs').item.json.revUrl }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data",
+              "neverError": true
+            }
+          }
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "ArtOfMetal-BulkDownloader/1.0 (educational research; your@email.com)"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "node-9",
+      "name": "Save Reverse to Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [1760, 400],
+      "continueOnFail": true,
+      "parameters": {
+        "operation": "upload",
+        "name": "={{ $('Build Image URLs').item.json.revFilename }}",
+        "inputDataFieldName": "data",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "REPLACE_WITH_FOLDER_ID",
+          "mode": "id"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-10",
+      "name": "Throttle 1 req/s",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1980, 400],
+      "parameters": {
+        "jsCode": "// Polite 1-second pause between records — keeps numismatics.org happy\nawait new Promise(r => setTimeout(r, 1000));\nreturn $input.all();"
+      }
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [
+        [{"node": "Read ANS CSV", "type": "main", "index": 0}]
+      ]
+    },
+    "Read ANS CSV": {
+      "main": [
+        [{"node": "Parse CSV Rows", "type": "main", "index": 0}]
+      ]
+    },
+    "Parse CSV Rows": {
+      "main": [
+        [{"node": "Loop Over Records", "type": "main", "index": 0}]
+      ]
+    },
+    "Loop Over Records": {
+      "main": [
+        [{"node": "Build Image URLs", "type": "main", "index": 0}],
+        []
+      ]
+    },
+    "Build Image URLs": {
+      "main": [
+        [{"node": "Fetch Obverse", "type": "main", "index": 0}]
+      ]
+    },
+    "Fetch Obverse": {
+      "main": [
+        [{"node": "Save Obverse to Drive", "type": "main", "index": 0}]
+      ]
+    },
+    "Save Obverse to Drive": {
+      "main": [
+        [{"node": "Fetch Reverse", "type": "main", "index": 0}]
+      ]
+    },
+    "Fetch Reverse": {
+      "main": [
+        [{"node": "Save Reverse to Drive", "type": "main", "index": 0}]
+      ]
+    },
+    "Save Reverse to Drive": {
+      "main": [
+        [{"node": "Throttle 1 req/s", "type": "main", "index": 0}]
+      ]
+    },
+    "Throttle 1 req/s": {
+      "main": [
+        [{"node": "Loop Over Records", "type": "main", "index": 0}]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}
