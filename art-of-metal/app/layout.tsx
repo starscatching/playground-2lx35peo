@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Sidebar from "@/components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Art of Metal — Coin Portfolio & Catalog",
-  description: "The luxury platform for serious coin collectors. Catalog, track, and showcase your numismatic portfolio.",
+  title: "Art of Metal — Precious History. Real Value.",
+  description: "The ultimate platform for serious coin collectors. Research, vault, portfolio, and live market data.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+      <body style={{ background: "#080808", color: "#F5F5F5", display: "flex", minHeight: "100vh" }}>
+        <Sidebar />
+        <main style={{ flex: 1, marginLeft: 160, minHeight: "100vh", overflowX: "hidden" }}>
+          {children}
+        </main>
       </body>
     </html>
   );

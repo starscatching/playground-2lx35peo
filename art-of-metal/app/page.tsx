@@ -1,222 +1,293 @@
+"use client";
 import Link from "next/link";
+import MetalPrices from "@/components/MetalPrices";
+import FeaturedCollections from "@/components/FeaturedCollections";
+import PortfolioWidget from "@/components/PortfolioWidget";
+import RecentAdditions from "@/components/RecentAdditions";
 
-const features = [
-  {
-    icon: "◎",
-    title: "Coin Catalog",
-    desc: "Browse thousands of coins from around the world — sorted by country, era, material, and rarity.",
-    href: "/catalog",
-  },
-  {
-    icon: "◈",
-    title: "Your Portfolio",
-    desc: "Upload photos of your coins, track your collection, and keep every detail in one secure place.",
-    href: "/portfolio",
-  },
-  {
-    icon: "◆",
-    title: "Image Vault",
-    desc: "High-resolution coin imagery organized by collection. Obverse, reverse, and details preserved.",
-    href: "/upload",
-  },
-];
-
-const stats = [
-  { value: "6,000+", label: "Coin Images" },
-  { value: "50+", label: "Countries" },
-  { value: "100+", label: "Years Covered" },
-  { value: "∞", label: "Your Collection" },
-];
-
-export default function HomePage() {
+export default function DashboardPage() {
   return (
-    <div>
-      {/* Hero */}
-      <section style={{
-        minHeight: "92vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "80px 24px",
-        position: "relative",
-        overflow: "hidden",
-      }}>
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "radial-gradient(ellipse 60% 50% at 50% 60%, rgba(201,168,76,0.06) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }} />
-        <div style={{
-          position: "absolute", inset: 0,
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          pointerEvents: "none",
-        }} />
+    <div style={{ display: "flex", minHeight: "100vh" }}>
 
-        <div style={{ maxWidth: 780, textAlign: "center", position: "relative" }}>
-          <div style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            border: "1px solid #2A2010",
-            borderRadius: 100,
-            padding: "6px 16px",
-            marginBottom: 36,
-            background: "rgba(201,168,76,0.05)",
-          }}>
-            <span style={{ color: "#C9A84C", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.15em" }}>
-              NUMISMATIC EXCELLENCE
-            </span>
+      {/* Main content */}
+      <div style={{ flex: 1, padding: "0 0 40px" }}>
+
+        {/* Top bar */}
+        <div style={{
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          padding: "16px 28px",
+          borderBottom: "1px solid #141414",
+          background: "#060606",
+          position: "sticky", top: 0, zIndex: 10,
+        }}>
+          <div>
+            <p style={{ color: "#C9A84C", fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.15em" }}>DASHBOARD</p>
+            <p style={{ color: "#888", fontSize: "0.75rem" }}>Home</p>
           </div>
-
-          <h1 style={{
-            fontSize: "clamp(2.8rem, 7vw, 5.5rem)",
-            fontWeight: 800,
-            lineHeight: 1.05,
-            letterSpacing: "-0.02em",
-            marginBottom: 28,
-          }}>
-            <span style={{ color: "#F5F5F5" }}>Your Coins.</span>
-            <br />
-            <span className="gold-text">Your Legacy.</span>
-          </h1>
-
-          <p style={{
-            color: "#666",
-            fontSize: "clamp(1rem, 2vw, 1.2rem)",
-            lineHeight: 1.75,
-            maxWidth: 560,
-            margin: "0 auto 48px",
-          }}>
-            Art of Metal is the premium platform for serious coin collectors.
-            Catalog your collection, upload your images, and preserve your numismatic legacy.
-          </p>
-
-          <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
-            <Link
-              href="/catalog"
-              className="btn-gold"
-              style={{ padding: "14px 36px", borderRadius: 8, fontSize: "0.85rem", letterSpacing: "0.08em", textDecoration: "none" }}
-            >
-              BROWSE CATALOG
-            </Link>
-            <Link
-              href="/upload"
+          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <input
+              placeholder="Search coins, metals, categories..."
               style={{
-                padding: "14px 36px",
-                borderRadius: 8,
-                fontSize: "0.85rem",
-                letterSpacing: "0.08em",
-                textDecoration: "none",
-                border: "1px solid #2A2A2A",
-                color: "#888",
-                transition: "all 0.2s",
+                background: "#0E0E0E", border: "1px solid #1A1A1A",
+                color: "#888", borderRadius: 6, padding: "8px 14px",
+                fontSize: "0.78rem", width: 260,
               }}
-            >
-              UPLOAD COINS
-            </Link>
+            />
+            <div style={{
+              width: 34, height: 34, borderRadius: "50%",
+              background: "linear-gradient(135deg, #8B6914, #E8C76A)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 14, color: "#000", fontWeight: 800, cursor: "pointer",
+            }}>R</div>
           </div>
         </div>
-      </section>
 
-      {/* Stats */}
-      <section style={{ borderTop: "1px solid #161616", borderBottom: "1px solid #161616", background: "#0A0A0A" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
-            {stats.map((s, i) => (
-              <div key={i} style={{
-                textAlign: "center",
-                padding: "32px 0",
-                borderRight: i < 3 ? "1px solid #161616" : "none",
+        {/* Hero */}
+        <div style={{
+          position: "relative", height: 340, overflow: "hidden",
+          background: "#060606",
+          borderBottom: "1px solid #141414",
+        }}>
+          {/* Background images grid */}
+          <div style={{
+            position: "absolute", inset: 0,
+            display: "grid", gridTemplateColumns: "repeat(5, 1fr)",
+            opacity: 0.25, gap: 2,
+          }}>
+            {[
+              "1932_133_4_Gold_20_Dollar,_United_States,_1932._1932.133.4_rev.jpg",
+              "1932_79_1_Silver_1_4_Dollar,_United_States,_1932._1932.79.1_obv.jpg",
+              "1915_226_4_Gold_20_Dollar,_United_States,_1915._1915.226.4_obv.jpg",
+              "1916_1_2_Cupronickel_5_cent_of_The_United_States,_United_St_obv.jpg",
+              "1934_146_1_Cupronickel_5_cent_of_The_United_States,_United_St_rev.jpg",
+            ].map((f, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={i} src={`https://storage.googleapis.com/art-of-metal-coins/coins/ans/${encodeURIComponent(f)}`}
+                alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
+                onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = "0"; }} />
+            ))}
+          </div>
+
+          {/* Gradient overlay */}
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "linear-gradient(90deg, #060606 35%, rgba(6,6,6,0.7) 60%, rgba(6,6,6,0.3) 100%)",
+          }} />
+
+          {/* Hero text */}
+          <div style={{ position: "relative", padding: "48px 32px", maxWidth: 520 }}>
+            <h1 style={{
+              fontSize: "3.5rem", fontWeight: 900, lineHeight: 1,
+              letterSpacing: "-0.02em", marginBottom: 16,
+            }}>
+              <span className="gold-text">ART</span>
+              <span style={{ color: "#F5F5F5" }}> of METAL</span>
+            </h1>
+            <p style={{ color: "#C9A84C", fontSize: "0.9rem", fontWeight: 500, marginBottom: 10, letterSpacing: "0.05em" }}>
+              The Ultimate Platform for Serious Collectors
+            </p>
+            <p style={{ color: "#555", fontSize: "0.85rem", lineHeight: 1.7, marginBottom: 28, maxWidth: 380 }}>
+              In-depth research. Real-time data. Secure vault.<br />
+              Everything you need to collect with confidence.
+            </p>
+            <div style={{ display: "flex", gap: 12 }}>
+              <Link href="/research" className="btn-gold"
+                style={{ padding: "10px 22px", borderRadius: 6, fontSize: "0.75rem", letterSpacing: "0.1em", textDecoration: "none" }}>
+                EXPLORE RESEARCH
+              </Link>
+              <Link href="/portfolio"
+                style={{
+                  padding: "10px 22px", borderRadius: 6, fontSize: "0.75rem", letterSpacing: "0.1em",
+                  textDecoration: "none", border: "1px solid #2A2A2A", color: "#888",
+                }}>
+                VIEW PORTFOLIO
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Metal prices ticker */}
+        <MetalPrices />
+
+        {/* Featured Collections */}
+        <div style={{ padding: "28px 28px 0" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
+            <p style={{ color: "#F0F0F0", fontWeight: 700, fontSize: "0.9rem", letterSpacing: "0.05em" }}>
+              FEATURED COLLECTIONS
+            </p>
+            <Link href="/catalog" style={{ color: "#C9A84C", fontSize: "0.72rem", textDecoration: "none", letterSpacing: "0.08em" }}>
+              Browse All →
+            </Link>
+          </div>
+          <FeaturedCollections />
+        </div>
+
+        {/* Bottom widgets row */}
+        <div style={{ padding: "28px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
+
+          {/* Research Spotlight */}
+          <div style={{
+            background: "#0A0A0A", border: "1px solid #1A1A1A", borderRadius: 14, padding: 20,
+          }}>
+            <p style={{ color: "#888", fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.12em", marginBottom: 16 }}>
+              RESEARCH SPOTLIGHT
+            </p>
+            <div style={{ display: "flex", gap: 14, alignItems: "center", marginBottom: 14 }}>
+              <div style={{
+                width: 80, height: 80, borderRadius: 8, flexShrink: 0,
+                background: "#0C0C0C", border: "1px solid #1A1A1A", overflow: "hidden",
+                display: "flex", alignItems: "center", justifyContent: "center",
               }}>
-                <p className="gold-text" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 800, lineHeight: 1 }}>
-                  {s.value}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`https://storage.googleapis.com/art-of-metal-coins/coins/ans/${encodeURIComponent("1932_79_1_Silver_1_4_Dollar,_United_States,_1932._1932.79.1_obv.jpg")}`}
+                  alt="Featured coin" style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                  onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = "0"; }} />
+              </div>
+              <div>
+                <p style={{ color: "#F0F0F0", fontWeight: 700, fontSize: "0.9rem", marginBottom: 4 }}>
+                  Morgan Silver Dollar
                 </p>
-                <p style={{ color: "#444", fontSize: "0.72rem", letterSpacing: "0.1em", marginTop: 8, fontWeight: 500 }}>
-                  {s.label.toUpperCase()}
-                </p>
+                <p style={{ color: "#C9A84C", fontSize: "0.7rem", fontWeight: 600 }}>The Key Date</p>
+              </div>
+            </div>
+            <p style={{ color: "#555", fontSize: "0.78rem", lineHeight: 1.65, marginBottom: 16 }}>
+              One of the most famous and sought-after coins in American numismatics. Low mintage, high demand, timeless appeal.
+            </p>
+            <Link href="/coin/1"
+              style={{
+                display: "inline-block", border: "1px solid #2A2010",
+                color: "#C9A84C", fontSize: "0.7rem", fontWeight: 600,
+                letterSpacing: "0.08em", padding: "7px 14px", borderRadius: 6,
+                textDecoration: "none",
+              }}>
+              VIEW FULL RESEARCH →
+            </Link>
+          </div>
+
+          {/* Portfolio Overview */}
+          <PortfolioWidget />
+
+          {/* Auction Highlight */}
+          <div style={{
+            background: "#0A0A0A", border: "1px solid #1A1A1A", borderRadius: 14, padding: 20,
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+              <p style={{ color: "#888", fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.12em" }}>
+                AUCTION HIGHLIGHT
+              </p>
+              <Link href="/catalog" style={{ color: "#C9A84C", fontSize: "0.65rem", textDecoration: "none" }}>View All</Link>
+            </div>
+
+            <div style={{
+              background: "#060606", border: "1px solid #1A1A1A", borderRadius: 10,
+              padding: 16, marginBottom: 14,
+            }}>
+              <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}>
+                <div style={{
+                  width: 64, height: 64, borderRadius: 8, flexShrink: 0,
+                  background: "#0C0C0C", border: "1px solid #1A1A1A", overflow: "hidden",
+                }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`https://storage.googleapis.com/art-of-metal-coins/coins/ans/${encodeURIComponent("1932_133_4_Gold_20_Dollar,_United_States,_1932._1932.133.4_rev.jpg")}`}
+                    alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                    onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = "0"; }} />
+                </div>
+                <div>
+                  <p style={{ color: "#F0F0F0", fontWeight: 700, fontSize: "0.85rem" }}>1932 Gold Double Eagle</p>
+                  <p style={{ color: "#888", fontSize: "0.7rem" }}>PCGS AU58</p>
+                </div>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <p style={{ color: "#444", fontSize: "0.65rem" }}>Current Bid</p>
+                  <p className="gold-text" style={{ fontSize: "1.3rem", fontWeight: 800 }}>$2,450</p>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <p style={{ color: "#444", fontSize: "0.65rem" }}>Ends in</p>
+                  <p style={{ color: "#F0F0F0", fontSize: "0.78rem", fontWeight: 600 }}>2d 14h 32m</p>
+                </div>
+              </div>
+            </div>
+
+            <button className="btn-gold" style={{
+              width: "100%", padding: "10px", borderRadius: 8,
+              fontSize: "0.72rem", letterSpacing: "0.1em",
+              border: "none", cursor: "pointer",
+            }}>
+              VIEW AUCTION
+            </button>
+          </div>
+        </div>
+
+        {/* Bottom features bar */}
+        <div style={{ padding: "0 28px" }}>
+          <div style={{
+            display: "grid", gridTemplateColumns: "repeat(6, 1fr)",
+            borderTop: "1px solid #141414", paddingTop: 24,
+          }}>
+            {[
+              { icon: "◎", label: "Deep Research", sub: "Historical data, mintage, and more" },
+              { icon: "◈", label: "Real-Time Data", sub: "Live metal prices & trends" },
+              { icon: "⬡", label: "Secure Vault", sub: "Bank-level security for your collection" },
+              { icon: "◆", label: "Portfolio Tracking", sub: "Track performance and value" },
+              { icon: "▦", label: "Expert Insights", sub: "Articles, guides, and analysis" },
+              { icon: "◉", label: "Global Community", sub: "Connect with serious collectors" },
+            ].map((f, i) => (
+              <div key={i} style={{ textAlign: "center", padding: "0 12px" }}>
+                <p style={{ color: "#C9A84C", fontSize: 20, marginBottom: 8 }}>{f.icon}</p>
+                <p style={{ color: "#888", fontSize: "0.7rem", fontWeight: 600, marginBottom: 4 }}>{f.label}</p>
+                <p style={{ color: "#333", fontSize: "0.62rem", lineHeight: 1.5 }}>{f.sub}</p>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Features */}
-      <section style={{ padding: "100px 24px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <p style={{ color: "#C9A84C", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.15em", marginBottom: 16 }}>
-              THE PLATFORM
-            </p>
-            <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 700, color: "#F5F5F5" }}>
-              Everything a collector needs
-            </h2>
+      {/* Right panel — Market Watch + Recent Additions */}
+      <div style={{
+        width: 240, flexShrink: 0,
+        borderLeft: "1px solid #141414",
+        background: "#060606",
+        display: "flex", flexDirection: "column",
+      }}>
+        {/* Market Watch */}
+        <div style={{ padding: "20px 16px", borderBottom: "1px solid #141414" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+            <p style={{ color: "#888", fontSize: "0.65rem", fontWeight: 600, letterSpacing: "0.12em" }}>MARKET WATCH</p>
+            <Link href="/market" style={{ color: "#C9A84C", fontSize: "0.62rem", textDecoration: "none" }}>View All</Link>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24 }}>
-            {features.map((f) => (
-              <Link key={f.href} href={f.href} style={{ textDecoration: "none" }}>
-                <div className="card" style={{ padding: 32, borderRadius: 14, height: "100%", display: "flex", flexDirection: "column" }}>
-                  <div style={{
-                    width: 48, height: 48,
-                    background: "rgba(201,168,76,0.08)",
-                    border: "1px solid #2A2010",
-                    borderRadius: 10,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 20, color: "#C9A84C",
-                    marginBottom: 24,
-                  }}>
-                    {f.icon}
-                  </div>
-                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#F0F0F0", marginBottom: 12 }}>{f.title}</h3>
-                  <p style={{ color: "#555", fontSize: "0.88rem", lineHeight: 1.7, flex: 1 }}>{f.desc}</p>
-                  <p style={{ color: "#C9A84C", fontSize: "0.78rem", marginTop: 24, letterSpacing: "0.06em", fontWeight: 600 }}>
-                    EXPLORE →
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
+          {[
+            { metal: "GOLD", price: "2,377.40", change: "+1.28%", up: true },
+            { metal: "SILVER", price: "28.96", change: "+0.85%", up: true },
+            { metal: "PLATINUM", price: "983.50", change: "-0.35%", up: false },
+            { metal: "PALLADIUM", price: "1,032.90", change: "+0.12%", up: true },
+          ].map(m => (
+            <div key={m.metal} style={{
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              padding: "10px 0", borderBottom: "1px solid #0E0E0E",
+            }}>
+              <div>
+                <p style={{ color: "#F0F0F0", fontWeight: 700, fontSize: "0.85rem" }}>{m.metal}</p>
+                <p style={{ color: "#C9A84C", fontWeight: 800, fontSize: "1rem" }}>${m.price}</p>
+              </div>
+              <span style={{
+                fontSize: "0.7rem", fontWeight: 600,
+                color: m.up ? "#4ade80" : "#f87171",
+                background: m.up ? "rgba(74,222,128,0.08)" : "rgba(248,113,113,0.08)",
+                border: `1px solid ${m.up ? "rgba(74,222,128,0.2)" : "rgba(248,113,113,0.2)"}`,
+                padding: "3px 7px", borderRadius: 100,
+              }}>
+                {m.change}
+              </span>
+            </div>
+          ))}
+          <p style={{ color: "#333", fontSize: "0.58rem", marginTop: 8 }}>Prices delayed 5 minutes ⓘ</p>
         </div>
-      </section>
 
-      {/* CTA Banner */}
-      <section style={{ padding: "0 24px 100px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <div style={{
-            background: "linear-gradient(135deg, #0E0A02, #161006)",
-            border: "1px solid #2A2010",
-            borderRadius: 20,
-            padding: "64px 48px",
-            textAlign: "center",
-            position: "relative",
-            overflow: "hidden",
-          }}>
-            <div style={{
-              position: "absolute", inset: 0,
-              background: "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(201,168,76,0.08) 0%, transparent 60%)",
-              pointerEvents: "none",
-            }} />
-            <p style={{ color: "#C9A84C", fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.15em", marginBottom: 20, position: "relative" }}>
-              START TODAY
-            </p>
-            <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", fontWeight: 800, color: "#F5F5F5", marginBottom: 16, position: "relative" }}>
-              Build your vault.
-            </h2>
-            <p style={{ color: "#555", fontSize: "1rem", marginBottom: 36, position: "relative" }}>
-              Upload your coin images and start cataloging your collection in minutes.
-            </p>
-            <Link
-              href="/upload"
-              className="btn-gold"
-              style={{ padding: "14px 40px", borderRadius: 8, fontSize: "0.85rem", letterSpacing: "0.08em", textDecoration: "none", position: "relative" }}
-            >
-              START UPLOADING
-            </Link>
-          </div>
-        </div>
-      </section>
+        {/* Recent Additions */}
+        <RecentAdditions />
+      </div>
     </div>
   );
 }
