@@ -1,7 +1,7 @@
 "use client";
+import { coinImg } from "@/lib/images";
 import Link from "next/link";
 
-const GCS = "https://storage.googleapis.com/art-of-metal-coins/coins/ans/";
 
 const collections = [
   {
@@ -72,7 +72,7 @@ export default function FeaturedCollections() {
             }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={GCS + encodeURIComponent(c.file)}
+                src={coinImg(c.file)}
                 alt={c.label}
                 style={{ width: "100%", height: "100%", objectFit: "contain" }}
                 onError={e => {

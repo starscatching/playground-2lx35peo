@@ -1,7 +1,7 @@
 "use client";
+import { coinImg } from "@/lib/images";
 import Link from "next/link";
 
-const GCS = "https://storage.googleapis.com/art-of-metal-coins/coins/ans/";
 
 const recent = [
   { name: "1921 Peace Dollar", grade: "PCGS MS64", price: "$1,250", file: "1932_79_1_Silver_1_4_Dollar,_United_States,_1932._1932.79.1_obv.jpg" },
@@ -29,7 +29,7 @@ export default function RecentAdditions() {
               background: "#060606", border: "1px solid #1A1A1A", overflow: "hidden",
             }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={GCS + encodeURIComponent(r.file)} alt={r.name}
+              <img src={coinImg(r.file)} alt={r.name}
                 style={{ width: "100%", height: "100%", objectFit: "contain" }}
                 onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = "0"; }} />
             </div>

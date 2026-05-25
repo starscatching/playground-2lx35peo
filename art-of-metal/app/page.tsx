@@ -1,8 +1,8 @@
 "use client";
+import { coinImg } from "@/lib/images";
 import Link from "next/link";
 import PortfolioWidget from "@/components/PortfolioWidget";
 
-const GCS = "https://storage.googleapis.com/art-of-metal-coins/coins/ans/";
 
 const HERO_COINS = [
   { file: "1932_133_4_Gold_20_Dollar,_United_States,_1932._1932.133.4_rev.jpg", label: "1932 Gold Double Eagle", grade: "PCGS MS65", value: "$2,450" },
@@ -56,7 +56,7 @@ function CoinImg({ file, size = 100, circle = true }: { file: string; size?: num
     }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={GCS + encodeURIComponent(file)}
+        src={coinImg(file)}
         alt=""
         style={{ width: "90%", height: "90%", objectFit: "contain" }}
         onError={e => {
@@ -151,7 +151,7 @@ export default function DashboardPage() {
                   {/* Gold ring */}
                   <div style={{ position: "absolute", inset: 4, borderRadius: "50%", border: "1px solid rgba(201,168,76,0.2)" }} />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={GCS + encodeURIComponent(c.file)} alt={c.label}
+                  <img src={coinImg(c.file)} alt={c.label}
                     style={{ width: "88%", height: "88%", objectFit: "contain", position: "relative", zIndex: 1 }}
                     onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = "0"; }} />
                 </div>
@@ -194,7 +194,7 @@ export default function DashboardPage() {
                       boxShadow: "0 4px 16px rgba(0,0,0,0.6)",
                     }}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={GCS + encodeURIComponent(col.files[1])} alt=""
+                      <img src={coinImg(col.files[1])} alt=""
                         style={{ width: "100%", height: "100%", objectFit: "contain" }}
                         onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = "0"; }} />
                     </div>
@@ -208,7 +208,7 @@ export default function DashboardPage() {
                       zIndex: 1,
                     }}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={GCS + encodeURIComponent(col.files[0])} alt=""
+                      <img src={coinImg(col.files[0])} alt=""
                         style={{ width: "100%", height: "100%", objectFit: "contain" }}
                         onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = "0"; }} />
                     </div>
@@ -281,7 +281,7 @@ export default function DashboardPage() {
                     position: "relative", zIndex: 1,
                   }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={GCS + encodeURIComponent(c.file)} alt={c.name}
+                    <img src={coinImg(c.file)} alt={c.name}
                       style={{ width: "90%", height: "90%", objectFit: "contain" }}
                       onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = "0"; }} />
                   </div>
