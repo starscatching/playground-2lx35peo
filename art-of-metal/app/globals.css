@@ -1,29 +1,38 @@
 @import "tailwindcss";
 
 :root {
-  --gold: #C9A84C;
+  --gold: #f2c66d;
+  --gold2: #a76d22;
+  --text: #f8edd2;
+  --muted: #c7b89b;
+  --bg: #030303;
+  --line: rgba(242,198,109,.38);
+  --display: 'Cinzel', Georgia, serif;
+  --body: 'DM Sans', system-ui, sans-serif;
+
+  /* legacy vars kept for app pages */
   --gold-light: #E8C76A;
   --gold-dark: #8B6914;
-  --bg: #080808;
   --bg-card: #101010;
   --bg-card-2: #161616;
   --border: #1A1A1A;
-  --text: #F5F5F5;
   --text-muted: #555555;
   --text-sub: #888888;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--bg);
+  background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--body);
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
 
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -31,34 +40,48 @@ body {
 ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
 
 .gold-text {
-  background: linear-gradient(135deg, #C9A84C 0%, #F0D070 50%, #C9A84C 100%);
+  background: linear-gradient(135deg, #f2c66d 0%, #fff5cf 50%, #f2c66d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .btn-gold {
-  background: linear-gradient(135deg, #8B6914, #C9A84C, #E8C76A);
-  color: #000;
-  font-weight: 700;
-  letter-spacing: 0.05em;
+  background: radial-gradient(circle at 30% 15%, rgba(255,235,170,.45), rgba(167,109,34,.22) 45%, rgba(0,0,0,.2));
+  border: 1px solid rgba(242,198,109,.45);
+  color: #ffe3a3;
+  font-weight: 900;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  font-size: .76rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.18), 0 0 25px rgba(242,198,109,.16);
+  border-radius: 999px;
+  padding: 13px 22px;
   transition: all 0.25s ease;
+  cursor: pointer;
+  display: inline-block;
 }
 .btn-gold:hover {
-  opacity: 0.88;
+  box-shadow: 0 20px 50px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.25), 0 0 40px rgba(242,198,109,.3);
   transform: translateY(-2px);
-  box-shadow: 0 6px 30px rgba(201,168,76,0.35);
 }
-.btn-gold:active { transform: translateY(0); }
 
 .btn-outline {
-  border: 1px solid #2A2A2A;
-  color: var(--text-sub);
-  background: transparent;
+  border: 1px solid rgba(242,198,109,.3);
+  color: var(--muted);
+  background: rgba(0,0,0,.3);
+  border-radius: 999px;
+  padding: 13px 22px;
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+  text-transform: uppercase;
   transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-block;
 }
 .btn-outline:hover {
-  border-color: var(--gold-dark);
+  border-color: rgba(242,198,109,.6);
   color: var(--gold);
 }
 
@@ -116,6 +139,10 @@ body {
   50% { box-shadow: 0 0 0 8px rgba(201,168,76,0); }
 }
 
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .stat-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -131,4 +158,11 @@ body {
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
   opacity: 0.5;
+}
+
+/* App pages (with sidebar) inherit these */
+.app-bg {
+  background: #080808;
+  color: #F5F5F5;
+  font-family: 'DM Sans', system-ui, sans-serif;
 }

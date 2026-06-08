@@ -79,24 +79,23 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Vault promo */}
-      <div style={{ padding: "12px", borderTop: "1px solid #141414" }}>
-        <div style={{
-          background: "linear-gradient(135deg, #0E0A02, #1A1208)",
-          border: "1px solid #2A2010",
-          borderRadius: 10, padding: "14px 12px", textAlign: "center",
-        }}>
-          <p style={{ color: "#C9A84C", fontSize: "0.7rem", fontWeight: 800, letterSpacing: "0.08em", marginBottom: 4 }}>
-            THE VAULT
-          </p>
-          <p style={{ color: "#444", fontSize: "0.58rem", lineHeight: 1.5, marginBottom: 10 }}>
-            Preserve. Protect.<br />Pass Down.
-          </p>
-          <Link href="/vault" style={{
-            display: "block", background: "linear-gradient(135deg, #8B6914, #C9A84C)",
-            color: "#000", fontWeight: 700, fontSize: "0.62rem", letterSpacing: "0.08em",
-            padding: "6px 10px", borderRadius: 6, textDecoration: "none",
-          }}>
+      {/* Auth + Vault */}
+      <div style={{ padding: "12px", borderTop: "1px solid #141414", display: "flex", flexDirection: "column", gap: 8 }}>
+        <Link href="/auth" style={{
+          display: "block", textAlign: "center",
+          border: "1px solid #1A1A1A", borderRadius: 8,
+          padding: "8px 10px", color: "#555", fontSize: "0.62rem",
+          fontWeight: 700, letterSpacing: "0.08em", textDecoration: "none",
+          transition: "all .2s",
+        }}
+          onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#2A2010"; (e.currentTarget as HTMLAnchorElement).style.color = "#C9A84C"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "#1A1A1A"; (e.currentTarget as HTMLAnchorElement).style.color = "#555"; }}
+        >
+          SIGN IN
+        </Link>
+        <div style={{ background: "linear-gradient(135deg,#0E0A02,#1A1208)", border: "1px solid #2A2010", borderRadius: 10, padding: "12px", textAlign: "center" }}>
+          <p style={{ color: "#C9A84C", fontSize: "0.68rem", fontWeight: 800, letterSpacing: "0.08em", marginBottom: 8 }}>THE VAULT</p>
+          <Link href="/vault" style={{ display: "block", background: "linear-gradient(135deg,#8B6914,#C9A84C)", color: "#000", fontWeight: 700, fontSize: "0.62rem", letterSpacing: "0.08em", padding: "6px 10px", borderRadius: 6, textDecoration: "none" }}>
             ENTER VAULT
           </Link>
         </div>
