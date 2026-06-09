@@ -8,10 +8,11 @@ const puppeteer = require('puppeteer');
   });
 
   const pages = [
-    { url: 'http://localhost:3000', file: '/tmp/ss-home.png' },
-    { url: 'http://localhost:3000/catalog', file: '/tmp/ss-catalog.png' },
-    { url: 'http://localhost:3000/portfolio', file: '/tmp/ss-portfolio.png' },
-    { url: 'http://localhost:3000/upload', file: '/tmp/ss-upload.png' },
+    { url: 'http://localhost:3001', file: '/tmp/ss-home.png' },
+    { url: 'http://localhost:3001/catalog', file: '/tmp/ss-catalog.png' },
+    { url: 'http://localhost:3001/portfolio', file: '/tmp/ss-portfolio.png' },
+    { url: 'http://localhost:3001/upload', file: '/tmp/ss-upload.png' },
+    { url: 'http://localhost:3001/auth', file: '/tmp/ss-auth.png' },
   ];
 
   for (const { url, file } of pages) {
