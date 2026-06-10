@@ -1,12 +1,13 @@
-import { createClient } from "@supabase/supabase-js";
+export { createClient as createBrowserClient } from "@/utils/supabase/client";
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://placeholder.supabase.co";
-const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "placeholder-key";
-
-export const supabase = createClient(url, key);
+// Legacy singleton for client components that import from this module
+import { createBrowserClient } from "@supabase/ssr";
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
+export const supabase = createBrowserClient(url, key);
 
 export const isConfigured = () =>
-  !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 export type Coin = {
   id: string;
