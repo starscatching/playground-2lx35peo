@@ -1,8 +1,7 @@
 "use client";
 import { useState, useMemo } from "react";
 import CoinCard from "@/components/CoinCard";
-
-const GCS_BASE = "https://storage.googleapis.com/art-of-metal-coins/coins/ans/";
+import { coinImg } from "@/lib/images";
 
 const SAMPLE_COINS = [
   { id: "1", name: "Morgan Silver Dollar", country: "United States", year: "1921", material: "Silver", file: "1934_146_1_Cupronickel_5_cent_of_The_United_States,_United_St_rev.jpg" },
@@ -145,7 +144,7 @@ export default function CatalogPage() {
                 country={coin.country}
                 year={coin.year}
                 material={coin.material}
-                gcsUrl={GCS_BASE + encodeURIComponent(coin.file)}
+                gcsUrl={coinImg(coin.file)}
               />
             ))}
           </div>
@@ -161,7 +160,7 @@ export default function CatalogPage() {
                   background: "#0C0C0C", flexShrink: 0, overflow: "hidden",
                 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={GCS_BASE + encodeURIComponent(coin.file)} alt={coin.name}
+                  <img src={coinImg(coin.file)} alt={coin.name}
                     style={{ width: "100%", height: "100%", objectFit: "contain" }}
                     onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = "0"; }} />
                 </div>

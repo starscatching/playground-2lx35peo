@@ -1,6 +1,6 @@
 import Link from "next/link";
-
-const GCS_BASE = "https://storage.googleapis.com/art-of-metal-coins/coins/ans/";
+import CoinImage from "@/components/CoinImage";
+import { coinImg } from "@/lib/images";
 
 const COIN_DATA: Record<string, {
   name: string; country: string; year: string; material: string;
@@ -77,17 +77,10 @@ export default async function CoinDetailPage({ params }: { params: Promise<{ id:
               marginBottom: 16,
               overflow: "hidden",
             }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={GCS_BASE + encodeURIComponent(coin.obvFile)}
+              <CoinImage
+                src={coinImg(coin.obvFile)}
                 alt={`${coin.name} obverse`}
                 style={{ width: "85%", height: "85%", objectFit: "contain" }}
-                onError={e => {
-                  const el = e.currentTarget as HTMLImageElement;
-                  el.style.display = "none";
-                  const parent = el.parentElement;
-                  if (parent) parent.innerHTML = '<span style="font-size:80px;opacity:0.08;color:#C9A84C">⬡</span>';
-                }}
               />
             </div>
 
@@ -100,10 +93,11 @@ export default async function CoinDetailPage({ params }: { params: Promise<{ id:
                   display: "flex", alignItems: "center", justifyContent: "center",
                   overflow: "hidden", position: "relative", cursor: "pointer",
                 }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={GCS_BASE + encodeURIComponent(file)} alt={label}
+                  <CoinImage
+                    src={coinImg(file)}
+                    alt={label}
                     style={{ width: "80%", height: "80%", objectFit: "contain" }}
-                    onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = "0"; }} />
+                  />
                   <span style={{
                     position: "absolute", bottom: 6, left: "50%", transform: "translateX(-50%)",
                     fontSize: "0.6rem", color: "#444", letterSpacing: "0.1em", whiteSpace: "nowrap",
