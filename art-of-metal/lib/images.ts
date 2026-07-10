@@ -11,9 +11,10 @@ export const COIN_IMGS: Record<string, string> = {
   "1932_51_22_Cupronickel_5_cent_of_The_United_States,_United_St_obv.jpg": "/coins/coin8.jpg",
 };
 
-// When GCS is live, swap this to:
-// export const GCS = "https://storage.googleapis.com/art-of-metal-coins/coins/ans/";
-// export function coinImg(file: string) { return GCS + encodeURIComponent(file); }
+// Coins from the master database already carry full GCS URLs; the 8 legacy
+// sample filenames map to local /public/coins copies for offline preview.
 export function coinImg(file: string): string {
-  return COIN_IMGS[file] ?? "/coins/coin1.jpg";
+  if (COIN_IMGS[file]) return COIN_IMGS[file];
+  if (/^https?:\/\//.test(file)) return file;
+  return "/coins/coin1.jpg";
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import CoinImage from "@/components/CoinImage";
 import { coinImg } from "@/lib/images";
+import { getCoinById } from "@/lib/coins";
 
 const COIN_DATA: Record<string, {
   name: string; country: string; year: string; material: string;
@@ -36,7 +37,27 @@ const COIN_DATA: Record<string, {
 
 export default async function CoinDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const coin = COIN_DATA[id] || COIN_DATA["1"];
+
+  const realCoin = getCoinById(id);
+  const coin = realCoin
+    ? {
+        name: realCoin.name,
+        country: "United States",
+        year: String(realCoin.year ?? "—"),
+        material: realCoin.material ?? "—",
+        denomination: realCoin.denom ?? "—",
+        weight: "—",
+        diameter: "—",
+        edge: "—",
+        mint: realCoin.mint ?? "—",
+        mintage: "",
+        obverse: realCoin.designer ? `Designed by ${realCoin.designer}.` : "Design details not yet catalogued.",
+        reverse: "See the American Numismatic Society record for full attribution.",
+        obvFile: realCoin.obverseImg ?? "",
+        revFile: realCoin.reverseImg ?? realCoin.obverseImg ?? "",
+        description: `From the American Numismatic Society collection. Accession ${realCoin.id}.`,
+      }
+    : COIN_DATA[id] || COIN_DATA["1"];
 
   const specs = [
     { label: "Country", value: coin.country },
@@ -47,7 +68,7 @@ export default async function CoinDetailPage({ params }: { params: Promise<{ id:
     { label: "Diameter", value: coin.diameter },
     { label: "Edge", value: coin.edge },
     { label: "Mint", value: coin.mint },
-    { label: "Mintage", value: parseInt(coin.mintage.replace(/,/g, "")).toLocaleString() },
+    ...(coin.mintage ? [{ label: "Mintage", value: parseInt(coin.mintage.replace(/,/g, "")).toLocaleString() }] : []),
   ];
 
   return (

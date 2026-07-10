@@ -3,12 +3,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const nav = [
-  { href: "/", label: "Overview", sub: "Home", icon: "⊟" },
+  { href: "/dashboard", label: "Overview", sub: "Dashboard", icon: "⊟" },
   { href: "/research", label: "Research", sub: "Coin & Bullion Data", icon: "◎" },
   { href: "/market", label: "Market Watch", sub: "Live Prices & Trends", icon: "◈" },
+  { href: "/auctions", label: "Auctions", sub: "Heritage & More", icon: "⚒" },
   { href: "/portfolio", label: "Portfolio", sub: "Track Your Holdings", icon: "◆" },
   { href: "/vault", label: "Vault", sub: "Your Digital Vault", icon: "⬡" },
-  { href: "/catalog", label: "Catalog", sub: "Browse Collection", icon: "▦" },
+  { href: "/catalog", label: "Catalog", sub: "Coin Series Database", icon: "▦" },
+  { href: "/community", label: "Community", sub: "Fellow Collectors", icon: "☺" },
+  { href: "/identify", label: "AI Identifier", sub: "Snap & Identify", icon: "◉" },
+  { href: "/tools/melt-calculator", label: "Melt Calculator", sub: "Metal Value Tools", icon: "⚖" },
+  { href: "/data-import", label: "Data Import", sub: "CSV & Population", icon: "⇩" },
   { href: "/upload", label: "Upload", sub: "Add to Vault", icon: "+" },
 ];
 
