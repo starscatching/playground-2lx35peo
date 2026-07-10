@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { coinImg } from "@/lib/images";
 
 interface CollectionCoin {
   id: string;
@@ -15,10 +16,14 @@ interface CollectionCoin {
 }
 
 const DEMO_COLLECTION: CollectionCoin[] = [
-  { id: "1", name: "Morgan Silver Dollar", country: "United States", year: "1921", material: "Silver", condition: "MS-65", notes: "Exceptional luster", imageUrl: "", addedDate: "2026-04-15" },
-  { id: "2", name: "Saint-Gaudens Double Eagle", country: "United States", year: "1907", material: "Gold", condition: "AU-58", notes: "High relief variety", imageUrl: "", addedDate: "2026-03-22" },
-  { id: "3", name: "Walking Liberty Half Dollar", country: "United States", year: "1918", material: "Silver", condition: "VF-35", notes: "Strong strike", imageUrl: "", addedDate: "2026-02-08" },
+  { id: "1", name: "Morgan Silver Dollar", country: "United States", year: "1921", material: "Silver", condition: "MS-65", notes: "Exceptional luster", imageUrl: coinImg("1932_79_1_Silver_1_4_Dollar,_United_States,_1932._1932.79.1_obv.jpg"), addedDate: "2026-04-15" },
+  { id: "2", name: "Saint-Gaudens Double Eagle", country: "United States", year: "1907", material: "Gold", condition: "AU-58", notes: "High relief variety", imageUrl: coinImg("1932_133_4_Gold_20_Dollar,_United_States,_1932._1932.133.4_rev.jpg"), addedDate: "2026-03-22" },
+  { id: "3", name: "Walking Liberty Half Dollar", country: "United States", year: "1918", material: "Silver", condition: "VF-35", notes: "Strong strike", imageUrl: coinImg("1932_51_29_Cupronickel_5_cent_of_The_United_States,_United_St_rev.jpg"), addedDate: "2026-02-08" },
 ];
+
+interface VaultEntry {
+  name: string; year: string; material: string; grade: string; gradeLabel: string; imgSrc?: string; addedAt: string;
+}
 
 const conditionColors: Record<string, string> = {
   "MS-65": "#4ade80", "MS-64": "#86efac", "AU-58": "#C9A84C",
@@ -26,8 +31,26 @@ const conditionColors: Record<string, string> = {
 };
 
 export default function PortfolioPage() {
-  const [coins] = useState<CollectionCoin[]>(DEMO_COLLECTION);
+  const [coins, setCoins] = useState<CollectionCoin[]>(DEMO_COLLECTION);
   const [activeTab, setActiveTab] = useState<"overview" | "coins" | "insights">("overview");
+
+  useEffect(() => {
+    const raw = localStorage.getItem("aom_vault_entries");
+    if (!raw) return;
+    const entries: VaultEntry[] = JSON.parse(raw);
+    if (entries.length === 0) return;
+    setCoins(entries.map((e, i) => ({
+      id: `vault-${i}`,
+      name: e.name,
+      country: "United States",
+      year: e.year || "—",
+      material: e.material,
+      condition: e.grade,
+      notes: e.gradeLabel,
+      imageUrl: e.imgSrc || "",
+      addedDate: e.addedAt.slice(0, 10),
+    })));
+  }, []);
 
   const statCards = [
     { label: "Total Coins", value: coins.length.toString(), icon: "⬡", sub: "in your vault" },
@@ -157,7 +180,12 @@ export default function PortfolioPage() {
                   display: "flex", alignItems: "center", justifyContent: "center",
                   position: "relative",
                 }}>
-                  <span style={{ fontSize: 64, opacity: 0.15, color: "#C9A84C" }}>⬡</span>
+                  {coin.imageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={coin.imageUrl} alt={coin.name} style={{ width: "70%", height: "70%", objectFit: "contain" }} />
+                  ) : (
+                    <span style={{ fontSize: 64, opacity: 0.15, color: "#C9A84C" }}>⬡</span>
+                  )}
                   <div style={{
                     position: "absolute", top: 12, right: 12,
                     background: "rgba(0,0,0,0.8)", border: "1px solid #2A2010",
